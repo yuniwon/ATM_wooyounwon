@@ -1,4 +1,6 @@
-package ATM;
+package main;
+
+import controller.BankController;
 
 public class _main {
     public static void main(String[] args) {

@@ -1,4 +1,4 @@
-package ATM;
+package account;
 // 한 계정마다 계좌 3개까지 만들 수 있음
 public class Account {
 	private int clientNo;

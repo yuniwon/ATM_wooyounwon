@@ -1,4 +1,8 @@
-package ATM;
+package controller;
+
+import account.AccountDAO;
+import client.ClientDAO;
+import utils.Util;
 
 public class BankController {
 	public AccountDAO accDAO;
@@ -7,7 +11,7 @@ public class BankController {
 	private int start;
 	private int end;
 	private String bankName;
-	BankController(){
+	public BankController(){
 		accDAO = AccountDAO.getInstance();
 		cliDAO = ClientDAO.getInstance();
 		idx = -1;

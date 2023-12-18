@@ -1,9 +1,11 @@
-package ATM;
+package client;
+
+import utils.Util;
+import account.AccountDAO;
 
 public class ClientDAO {
 public Client[] cliList;
 private int cnt;
-
 
 private ClientDAO() {
 	
@@ -54,7 +56,7 @@ public static ClientDAO getInstance() {
         System.out.println(cliList[idx].getId() + " " + cliList[idx].getPw() + " " + cliList[idx].getName());
     }
 
-    void deleteClient(AccountDAO adao) {
+    public void deleteClient(AccountDAO adao) {
         String id = Util.getValue("삭제할 회원 아이디를 입력하세요");
         int idx = -1;
         for(int i = 0; i < cnt; i++) {
@@ -78,7 +80,7 @@ public static ClientDAO getInstance() {
         }
     }
 
-    void saveClientData() {
+    public void saveClientData() {
     	if(cnt == 0) {
     		System.out.println("저장할 데이터가 없습니다");
     		return;

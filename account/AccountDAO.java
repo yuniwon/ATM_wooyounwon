@@ -1,4 +1,7 @@
-package ATM;
+package account;
+
+import client.Client;
+import utils.Util;
 
 public class AccountDAO {
 public Account[] accList;

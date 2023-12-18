@@ -1,4 +1,4 @@
-package ATM;
+package client;
 
 public class Client {
 
