@@ -3,15 +3,13 @@ package ATM;
 public class BankController {
 	public AccountDAO accDAO;
 	public ClientDAO cliDAO;
-	private Util sc;
 	private int idx;
 	private int start;
 	private int end;
 	private String bankName;
 	BankController(){
-		accDAO = new AccountDAO();
-		cliDAO = new ClientDAO();
-		sc = new Util();
+		accDAO = AccountDAO.getInstance();
+		cliDAO = ClientDAO.getInstance();
 		idx = -1;
 		start = 0;
 		end = 3;
@@ -61,7 +59,7 @@ public class BankController {
 			bankName();
 			mainMenu(); //초기
 			
-			int sel = sc.getValue("메뉴 선택", start, end); // 메뉴 사용자 입력
+			int sel = Util.getValue("메뉴 선택", start, end); // 메뉴 사용자 입력
 			if(sel == 0) { 
 				System.out.println("프로그램 종료");
 				break;
@@ -72,7 +70,7 @@ public class BankController {
 				while(true) {
 					bankName();
 					admin(); //관리자 화면출력
-					sel = sc.getValue("메뉴 선택", start, end);
+					sel = Util.getValue("메뉴 선택", start, end);
 					if(sel == 0) {
 						break;
 					}else if(sel == 1) {
@@ -90,7 +88,7 @@ public class BankController {
 						accDAO.saveAccountData();
 					}else if(sel == 5) {
 						//데이터불러오기
-						sc.laodFromFile(accDAO, cliDAO);
+						Util.laodFromFile(accDAO, cliDAO);
 					}
 				}
 				continue;
@@ -101,7 +99,7 @@ public class BankController {
 				while(true){
 					bankName();
 					user();
-					sel = sc.getValue("사용자 메뉴 선택", start, end);
+					sel = Util.getValue("사용자 메뉴 선택", start, end);
 					if(sel == 0) {
 						idx = -1;
 						break;

@@ -4,6 +4,13 @@ public class AccountDAO {
 public Account[] accList;
 private int cnt;
 
+private AccountDAO() {
+	
+}
+private static AccountDAO intstance = new AccountDAO();
+public static AccountDAO getInstance() {
+	return intstance;
+}
 // 데이터로부터 계좌정보를 읽어서 계좌목록에 추가
     public void addAccountsFromData(String accData) {
         String[] temp = accData.split("\n");

@@ -1,8 +1,19 @@
 package ATM;
 
 public class ClientDAO {
-Client[] cliList;
-int cnt;
+public Client[] cliList;
+private int cnt;
+
+
+private ClientDAO() {
+	
+}
+private static ClientDAO instance = new ClientDAO();
+
+public static ClientDAO getInstance() {
+	
+	return instance;
+}
 
     public void addClientsFromData(String cliData) {
         String[] temp = cliData.split("\n");

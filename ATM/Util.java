@@ -62,7 +62,7 @@ public class Util {
         
     }
     // 파일 읽기
-    public static String loadFile(String fileName){
+    private static String loadFile(String fileName){
         String data = "";
         try(FileReader fr = new FileReader(CUR_PATH + fileName); BufferedReader br = new BufferedReader(fr);) {
                 String line = "";
@@ -79,9 +79,6 @@ public class Util {
             return data;
     }
 
-   private static void closeScanner() {
-            sc.close();
-    }
     //파일이 없을때 생성
     private static void fileInit(String fileName) {
 		File file = new File(CUR_PATH + fileName);
