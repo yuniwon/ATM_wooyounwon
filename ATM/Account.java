@@ -12,7 +12,35 @@ public class Account {
 		this.accNumber = accNumber;
 		this.money= money;
 	}
-	void print() {
+	
+	
+	public int getClientNo() {
+		return clientNo;
+	}
+
+
+	public String getClientId() {
+		return clientId;
+	}
+
+
+
+	public String getAccNumber() {
+		return accNumber;
+	}
+
+
+	public int getMoney() {
+		return money;
+	}
+
+
+	public void setMoney(int money) {
+		this.money = money;
+	}
+
+
+	public void print() {
 		System.out.println(clientNo + "/ " + clientId + "/ " + accNumber + "/ " + money);
 	}
 }

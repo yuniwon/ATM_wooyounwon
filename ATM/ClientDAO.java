@@ -3,12 +3,8 @@ package ATM;
 public class ClientDAO {
 Client[] cliList;
 int cnt;
-Util sc;
-ClientDAO(){
-    sc = new Util();
-}
 
-    void addClientsFromData(String cliData) {
+    public void addClientsFromData(String cliData) {
         String[] temp = cliData.split("\n");
         cnt = temp.length;
         cliList = new Client[cnt];
@@ -18,18 +14,18 @@ ClientDAO(){
         }
     }
 
-    void printClientList() {
+    public void printClientList() {
         for(int i = 0; i < cnt; i++) {
-            System.out.printf("%d. %s %s %s %n",cliList[i].clientNo,cliList[i].id,cliList[i].pw,cliList[i].name);
+            System.out.printf("%d. %s %s %s %n",cliList[i].getClientNo(),cliList[i].getId(),cliList[i].getPw(),cliList[i].getName());
         }
     }
 
-    void updateClient() {
+    public void updateClient() {
         
-        String id = sc.getValue("수정할 회원 아이디를 입력하세요");
+        String id = Util.getValue("수정할 회원 아이디를 입력하세요");
         int idx = -1;
         for(int i = 0; i < cnt; i++) {
-            if(cliList[i].id.equals(id)) {
+            if(cliList[i].getId().equals(id)) {
                 idx = i;
                 break;
             }
@@ -39,19 +35,19 @@ ClientDAO(){
             return;
         }
         System.out.println("수정할 회원 정보를 입력하세요");
-        String pw = sc.getValue("비밀번호");
-        String name = sc.getValue("이름");
-        cliList[idx].pw = pw;
-        cliList[idx].name = name;
+        String pw = Util.getValue("비밀번호");
+        String name = Util.getValue("이름");
+        cliList[idx].setPw(pw);
+        cliList[idx].setName(name);
         System.out.println("회원정보가 수정되었습니다.");
-        System.out.println(cliList[idx].id + " " + cliList[idx].pw + " " + cliList[idx].name);
+        System.out.println(cliList[idx].getId() + " " + cliList[idx].getPw() + " " + cliList[idx].getName());
     }
 
     void deleteClient(AccountDAO adao) {
-        String id = sc.getValue("삭제할 회원 아이디를 입력하세요");
+        String id = Util.getValue("삭제할 회원 아이디를 입력하세요");
         int idx = -1;
         for(int i = 0; i < cnt; i++) {
-            if(cliList[i].id.equals(id)) {
+            if(cliList[i].getId().equals(id)) {
                 idx = i;
                 break;
             }
@@ -61,7 +57,7 @@ ClientDAO(){
             return;
         }
         System.out.println("정말로 삭제하시겠습니까? 예 : 0, 아니오 : 1");
-        int sel = sc.getValue("선택", 0, 1);
+        int sel = Util.getValue("선택", 0, 1);
         if(sel == 0) {
             adao.deleteAccountFromOneClient(cliList[idx]);
             deleteClient(idx);
@@ -78,17 +74,17 @@ ClientDAO(){
     	}
         String data = "";
         for(int i = 0; i < cnt; i++) {
-            data += cliList[i].clientNo + "/" + cliList[i].id + "/" + cliList[i].pw + "/" + cliList[i].name + "\n";
+            data += cliList[i].getClientNo() + "/" + cliList[i].getId() + "/" + cliList[i].getPw() + "/" + cliList[i].getName() + "\n";
         }
         data = data.substring(0, data.length() -1);
-        sc.saveData("client.txt", data);
+        Util.saveData("client.txt", data);
     }
 
     public void addClient() {
-        String id = sc.getValue("아이디");
-        if(cliList != null && sc.isRealId(id, cliList)) return;
-        String pw = sc.getValue("비밀번호");
-        String name = sc.getValue("이름");
+        String id = Util.getValue("아이디");
+        if(cliList != null && Util.isRealId(id, cliList)) return;
+        String pw = Util.getValue("비밀번호");
+        String name = Util.getValue("이름");
         if(cliList == null) {
             cliList = new Client[1];
             cliList[0] = new Client(1001+cnt,id,pw,name);
@@ -108,12 +104,12 @@ ClientDAO(){
         System.out.println("회원가입이 완료되었습니다.");
     }
 
-    int login() {
-        String id = sc.getValue("아이디");
-        String pw = sc.getValue("비밀번호");
+    public int login() {
+        String id = Util.getValue("아이디");
+        String pw = Util.getValue("비밀번호");
         int idx = -1;
         for(int i = 0; i < cnt; i++) {
-            if(cliList[i].id.equals(id) && cliList[i].pw.equals(pw)) {
+            if(cliList[i].getId().equals(id) && cliList[i].getPw().equals(pw)) {
                 idx = i;
                 return idx;
             }
@@ -122,14 +118,14 @@ ClientDAO(){
         return idx;
     }
 
-    int deleteClient(AccountDAO adao,int idx) {
-        String pw = sc.getValue("비밀번호 확인");
-        if(!pw.equals(cliList[idx].pw)) {
+    public int deleteClient(AccountDAO adao,int idx) {
+        String pw = Util.getValue("비밀번호 확인");
+        if(!pw.equals(cliList[idx].getPw())) {
             System.out.println("비밀번호가 일치하지 않습니다.");
             return idx;
         }
         System.out.println("정말로 탈퇴하시겠습니까? 예 : 0, 아니오 : 1");
-        int sel = sc.getValue("선택", 0, 1);
+        int sel = Util.getValue("선택", 0, 1);
         if(sel == 0) {
             adao.deleteAccountFromOneClient(cliList[idx]);
             deleteClient(idx);
@@ -140,7 +136,7 @@ ClientDAO(){
        
             return idx;
     }
-    void deleteClient(int idx){
+    public void deleteClient(int idx){
          Client[] temp = new Client[cnt-1];
             int j = 0;
             for(int i = 0; i < cnt; i++) {
@@ -154,9 +150,9 @@ ClientDAO(){
     }
 
     public void myPage(AccountDAO accDAO, int idx) {
-        System.out.println("아이디 : " + cliList[idx].id);
-        System.out.println("비밀번호 : " + cliList[idx].pw);
-        System.out.println("이름 : " + cliList[idx].name);
+        System.out.println("아이디 : " + cliList[idx].getId());
+        System.out.println("비밀번호 : " + cliList[idx].getPw());
+        System.out.println("이름 : " + cliList[idx].getName());
         accDAO.printAccountListFromOneClient(cliList[idx]);
     }
 

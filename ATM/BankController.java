@@ -1,13 +1,13 @@
 package ATM;
 
 public class BankController {
-	AccountDAO accDAO;
-	ClientDAO cliDAO;
-	Util sc;
-	int idx;
-	int start;
-	int end;
-	String bankName;
+	public AccountDAO accDAO;
+	public ClientDAO cliDAO;
+	private Util sc;
+	private int idx;
+	private int start;
+	private int end;
+	private String bankName;
 	BankController(){
 		accDAO = new AccountDAO();
 		cliDAO = new ClientDAO();
@@ -16,10 +16,7 @@ public class BankController {
 		start = 0;
 		end = 3;
 		bankName = "우연뱅크";
-		sc.tempData(accDAO, cliDAO);
-		
-	}
-	void init(){
+		Util.tempData(accDAO, cliDAO);
 		
 	}
 	// [1]관리자 [2]사용자 [0]종료
@@ -41,24 +38,24 @@ public class BankController {
 	// 이체 : 잔고 내에서만 이체가능 본인 계좌사이에서 이체 가능.동일계좌 이체불가능
 	// 탈퇴 : 비밀번호 다시 입력받아서 탈퇴가능. 
 	// 마이페이지 : 내 계좌목록/잔고 확인
-	void bankName() {
+	private void bankName() {
 		System.out.println("=======" + bankName +"=======");
 	}
-	void mainMenu() {
+	private void mainMenu() {
 		//초기화면
 		System.out.printf("[1]관리자 %n[2]사용자 %n[0]종료%n");	
 	}
-	void admin(){  // 관리자메뉴
+	private void admin(){  // 관리자메뉴
 		System.out.printf("[1] 회원목록 %n[2] 회원수정 %n[3]회원 삭제 %n[4]데이터 저장 %n[5]데이터 불러오기%n");
 	}
-	void user() { // 사용자 메뉴
+	private void user() { // 사용자 메뉴
 		if(idx == -1) {
 		System.out.printf("[1] 회원가입 %n[2] 로그인 %n[0] 뒤로가기%n");
 			return;
 		} // 로그인 후
 		System.out.printf("[1] 계좌추가 %n[2] 계좌삭제 %n[3] 입금 %n[4] 출금 %n[5]이체 %n[6]탈퇴 %n[7]마이페이지 [0]로그아웃%n");
 	}
-	void run() { //주 실행메소드
+	public void run() { //주 실행메소드
 		
 		while (true) {
 			bankName();

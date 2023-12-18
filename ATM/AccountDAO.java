@@ -1,12 +1,9 @@
 package ATM;
 
 public class AccountDAO {
-Account[] accList;
-int cnt;
-Util sc;
-AccountDAO(){
-    sc = new Util();
-}
+public Account[] accList;
+private int cnt;
+
 // 데이터로부터 계좌정보를 읽어서 계좌목록에 추가
     public void addAccountsFromData(String accData) {
         String[] temp = accData.split("\n");
@@ -24,10 +21,10 @@ AccountDAO(){
     	}
         String data = "";
         for(int i = 0; i < cnt; i++) {
-            data += accList[i].clientNo + "/" + accList[i].clientId + "/" + accList[i].accNumber + "/" + accList[i].money + "\n";
+            data += accList[i].getClientNo() + "/" + accList[i].getClientId() + "/" + accList[i].getAccNumber() + "/" + accList[i].getMoney() + "\n";
         }
         data = data.substring(0, data.length() -1);
-        sc.saveData("account.txt", data);
+        Util.saveData("account.txt", data);
     }
     public void addAccount(Client cli) {
     	//본인 계좌 갯수 확인
@@ -36,12 +33,12 @@ AccountDAO(){
     		System.out.println("최대 3개의 계좌만 개설할 수 있습니다.");
     		return;
     	}
-        String accNumber = sc.getValue("계좌번호를 입력하세요");
+        String accNumber = Util.getValue("계좌번호를 입력하세요");
         //계좌번호 유효성 확인
-        if(sc.matchAccountNumber(accNumber)){
+        if(Util.matchAccountNumber(accNumber)){
             return;
         }
-        int idx = sc.findIdxFromAccountNum(accList, accNumber);
+        int idx = Util.findIdxFromAccountNum(accList, accNumber);
         if(idx != -1) {
             System.out.println("이미 존재하는 계좌번호입니다.");
             return;
@@ -50,7 +47,7 @@ AccountDAO(){
         for(int i = 0; i < cnt; i++) {
             temp[i] = accList[i];
         }
-        temp[cnt++] = new Account(cli.clientNo,cli.id,accNumber,0);
+        temp[cnt++] = new Account(cli.getClientNo(),cli.getId(),accNumber,0);
         temp[cnt-1].print();
         accList = temp;
         System.out.println("계좌가 생성되었습니다.");
@@ -61,7 +58,7 @@ AccountDAO(){
 		// TODO Auto-generated method stub
 		cnt = 0;
 		for(Account account : accList) {
-			if(client.clientNo == account.clientNo) {
+			if(client.getClientNo() == account.getClientNo()) {
 				cnt++;
 			}
 		}
@@ -69,14 +66,14 @@ AccountDAO(){
 	}
 	
    public void deleteAccount(Client client) {
-        String accNumber = sc.getValue("삭제할 계좌번호를 입력하세요");
-        int idx =  sc.findIdxFromAccountNum(accList, accNumber);
+        String accNumber = Util.getValue("삭제할 계좌번호를 입력하세요");
+        int idx =  Util.findIdxFromAccountNum(accList, accNumber);
         if(idx == -1) {
             System.out.println("해당 계좌가 존재하지 않습니다.");
             return;
         }
 
-        if(!sc.isMyAccount(accList[idx], client.clientNo)){
+        if(!Util.isMyAccount(accList[idx], client.getClientNo())){
             System.out.println("본인의 계좌만 삭제할 수 있습니다.");
             return;
         } 
@@ -97,68 +94,68 @@ AccountDAO(){
 
     }
    public void deposit(Client cli) {
-        String accNumber = sc.getValue("입금할 계좌번호를 입력하세요");
-        int idx = sc.findIdxFromAccountNum(accList, accNumber);
+        String accNumber = Util.getValue("입금할 계좌번호를 입력하세요");
+        int idx = Util.findIdxFromAccountNum(accList, accNumber);
         if(idx == -1) {
             System.out.println("해당 계좌가 존재하지 않습니다.");
             return;
         }
-        if(!sc.isMyAccount(accList[idx], cli.clientNo)){
+        if(!Util.isMyAccount(accList[idx], cli.getClientNo())){
             System.out.println("본인의 계좌만 입금할 수 있습니다.");
             return;
         }
-        int money = sc.getValue("입금할 금액을 입력하세요", 100, 1000000);
-        accList[idx].money += money;
+        int money = Util.getValue("입금할 금액을 입력하세요", 100, 1000000);
+        accList[idx].setMoney(money);
         System.out.println("입금이 완료되었습니다.");
         accList[idx].print();
     }
     public void withdraw(Client client) {
-        String accNumber = sc.getValue("출금할 계좌번호를 입력하세요");
-        int idx = sc.findIdxFromAccountNum(accList, accNumber);
+        String accNumber = Util.getValue("출금할 계좌번호를 입력하세요");
+        int idx = Util.findIdxFromAccountNum(accList, accNumber);
         if(idx == -1) {
             System.out.println("해당 계좌가 존재하지 않습니다.");
             return;
         }
-        if(!sc.isMyAccount(accList[idx], client.clientNo)){
+        if(!Util.isMyAccount(accList[idx], client.getClientNo())){
             System.out.println("본인의 계좌만 출금할 수 있습니다.");
              return;
         }
-        System.out.println("현재 잔액은 " + accList[idx].money + "원 입니다.");
-        int money = sc.getValue("출금할 금액을 입력하세요", 100, 1000000);
-        if(accList[idx].money < money) {
+        System.out.println("현재 잔액은 " + accList[idx].getMoney() + "원 입니다.");
+        int money = Util.getValue("출금할 금액을 입력하세요", 100, 1000000);
+        if(accList[idx].getMoney() < money) {
             System.out.println("잔액이 부족합니다.");
             return;
         }
-        accList[idx].money -= money;
+        accList[idx].setMoney(money);
         System.out.println("출금이 완료되었습니다.");
         accList[idx].print();
     }
    public void transfer(Client client) {
-        String accNumber = sc.getValue("출금할 계좌번호를 입력하세요");
-        int idx = sc.findIdxFromAccountNum(accList, accNumber);
+        String accNumber = Util.getValue("출금할 계좌번호를 입력하세요");
+        int idx = Util.findIdxFromAccountNum(accList, accNumber);
         if(idx == -1) {
             System.out.println("해당 계좌가 존재하지 않습니다.");
             return;
         }
-        if(!sc.isMyAccount(accList[idx], client.clientNo)){
+        if(!Util.isMyAccount(accList[idx], client.getClientNo())){
             System.out.println("본인의 계좌만 이체할 수 있습니다.");
             return;
         }
-        System.out.println("현재 잔액은 " + accList[idx].money + "원 입니다.");
-        int money = sc.getValue("이체할 금액을 입력하세요", 100, 1000000);
-        if(accList[idx].money < money) {
+        System.out.println("현재 잔액은 " + accList[idx].getMoney() + "원 입니다.");
+        int money = Util.getValue("이체할 금액을 입력하세요", 100, 1000000);
+        if(accList[idx].getMoney() < money) {
             System.out.println("잔액이 부족합니다.");
             return;
         }
         System.out.println("이체할 계좌번호를 입력하세요");
-        String accNumber2 = sc.getValue("계좌번호를 입력하세요");
-        int idx2 = sc.findIdxFromAccountNum(accList, accNumber2);
+        String accNumber2 = Util.getValue("계좌번호를 입력하세요");
+        int idx2 = Util.findIdxFromAccountNum(accList, accNumber2);
         if(idx2 == -1) {
             System.out.println("해당 계좌가 존재하지 않습니다.");
             return;
         }
-        accList[idx].money -= money;
-        accList[idx2].money += money;
+        accList[idx].setMoney(money); 
+        accList[idx2].setMoney(money); 
         System.out.println("이체가 완료되었습니다.");
         accList[idx].print();
         accList[idx2].print();
@@ -166,7 +163,7 @@ AccountDAO(){
     public void deleteAccountFromOneClient(Client client) {
         int cnt2 = 0;
         for(int i = 0; i < cnt; i++) {
-            if(accList[i].clientNo == client.clientNo) {
+            if(accList[i].getClientNo() == client.getClientNo()) {
                 cnt2++;
             }
         }
@@ -177,7 +174,7 @@ AccountDAO(){
         Account[] temp = new Account[cnt-cnt2];
         int j = 0;
         for(int i = 0; i < cnt; i++) {
-            if(accList[i].clientNo == client.clientNo) continue;
+            if(accList[i].getClientNo() == client.getClientNo()) continue;
             temp[j++] = accList[i];
         }
         accList = temp;
@@ -185,7 +182,7 @@ AccountDAO(){
     }
     public void printAccountListFromOneClient(Client client) {
         for(int i = 0; i < cnt; i++) {
-            if(accList[i].clientNo == client.clientNo) {
+            if(accList[i].getClientNo() == client.getClientNo()) {
                 accList[i].print();
             }
         }

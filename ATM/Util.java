@@ -9,15 +9,12 @@ import java.util.Scanner;
 
 public class Util {
 
-	Scanner sc;
-	final String CUR_PATH = System.getProperty("user.dir") + "\\src\\ATM\\";
-    Util(){
-        sc = new Scanner(System.in);
+	private static Scanner sc = new Scanner(System.in);
+	private final static String CUR_PATH = System.getProperty("user.dir") + "\\src\\ATM\\";
 
-    }
 	//account.txt , client.txt
 	//임시데이터
-	void tempData(AccountDAO accDAO, ClientDAO cliDAO) {
+	public static void tempData(AccountDAO accDAO, ClientDAO cliDAO) {
 		String userdata = "1001/test01/pw1/김철수\n";
 		userdata += "1002/test02/pw2/이영희\n";
 		userdata += "1003/test03/pw3/신민아\n";
@@ -38,7 +35,7 @@ public class Util {
 	}
 
     //숫자 입력
-	int getValue(String msg, int start, int end) {
+	public static int getValue(String msg, int start, int end) {
         while(true) {
             System.out.printf("▶ %s[%d-%d] 입력 :",msg, start, end);
             try {
@@ -58,13 +55,14 @@ public class Util {
     }
 
     // 문자열 입력
-    String getValue(String msg) {
+    public static String getValue(String msg) {
         System.out.printf("▶ %s 입력 : ", msg);
         
         return sc.next();
+        
     }
     // 파일 읽기
-    String loadFile(String fileName){
+    public static String loadFile(String fileName){
         String data = "";
         try(FileReader fr = new FileReader(CUR_PATH + fileName); BufferedReader br = new BufferedReader(fr);) {
                 String line = "";
@@ -77,15 +75,15 @@ public class Util {
                 e.printStackTrace();
                 System.out.println(fileName + "데이터 로드 실패");
             }
-            
+
             return data;
     }
 
-    void closeScanner() {
+   private static void closeScanner() {
             sc.close();
     }
     //파일이 없을때 생성
-    void fileInit(String fileName) {
+    private static void fileInit(String fileName) {
 		File file = new File(CUR_PATH + fileName);
         System.out.println(CUR_PATH);
 		if (!file.exists()) {
@@ -98,14 +96,14 @@ public class Util {
 		}
 	}
     //파일에서 데이터 읽기
-    void laodFromFile(AccountDAO accDAO, ClientDAO cliDAO) {
+    public static void laodFromFile(AccountDAO accDAO, ClientDAO cliDAO) {
 		String accData =  loadFile("account.txt");
 		String cliData =  loadFile("client.txt");
         accDAO.addAccountsFromData(accData);
         cliDAO.addClientsFromData(cliData);
     }
 //파일저장
-    void saveData(String string, String data) {
+    public static void saveData(String string, String data) {
         try(FileWriter fw = new FileWriter(CUR_PATH + string);) {
             fw.write(data);
             System.out.println(string + "데이터 저장 완료");
@@ -115,33 +113,33 @@ public class Util {
         }
     }
 //아이디 중복확인
-    boolean isRealId(String id, Client[] cliList) {
+    public static boolean isRealId(String id, Client[] cliList) {
         for(int i = 0; i < cliList.length; i++) {
-            if(cliList[i].id.equals(id)) {
+            if(cliList[i].getId().equals(id)) {
                 System.out.println("중복된 아이디입니다.");
                 return true;
             }
         }
         return false;
     }
-    boolean matchAccountNumber(String accNumber) {
+    public static boolean matchAccountNumber(String accNumber) { //계좌확인
         if(!accNumber.matches("\\d{4}-\\d{4}-\\d{4}")) {
             System.out.println("계좌번호 형식이 올바르지 않습니다.");
             return true;
         }
         return false;
     }
-    int findIdxFromAccountNum(Account[] accList, String accNumber) {
+    public static int findIdxFromAccountNum(Account[] accList, String accNumber) {
         int cnt = accList.length;
         for(int i = 0; i < cnt; i++) {
-            if(accList[i].accNumber.equals(accNumber)) {
+            if(accList[i].getAccNumber().equals(accNumber)) {
                 return i;
             }
         }
         return -1;
     }
-    boolean isMyAccount(Account account, int cli) {
-        if(account.clientNo == cli) {
+    public static boolean isMyAccount(Account account, int cli) {
+        if(account.getClientNo() == cli) {
             return true;
         }
         return false;
